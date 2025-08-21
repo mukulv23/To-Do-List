@@ -5,8 +5,10 @@ import Routing from "./Routes/Routing"
 function App() {
   return (
     <>
-    <Navbar/>
-    <Routing/>
+      <div className="container mx-auto">
+        <Navbar />
+        <Routing />
+      </div>
     </>
   )
 }
