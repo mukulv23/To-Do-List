@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import Context from './Context'
 
 const Home = () => {
+  const name = useContext(Context)
   return (
-    <div>Home</div>
+    <h1 className='text-xl text-black font-bold'>Hello {name}</h1>
   )
 }
 
