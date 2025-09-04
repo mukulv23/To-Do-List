@@ -4,16 +4,18 @@ import Home from '../Components/Home'
 import Tasks from '../Components/Tasks'
 import Login from '../Components/Login'
 import Profile from '../Components/Profile'
+import Signup from '../Components/Signup'
 
 const Routing = () => {
   return (
     <>
-    <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/tasks' element={<Tasks/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/profile' element={<Profile/>}/>
-    </Routes>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/tasks' element={<Tasks />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/signup' element={<Signup />} />
+      </Routes>
     </>
   )
 }

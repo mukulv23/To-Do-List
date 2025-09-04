@@ -34,10 +34,10 @@ const Login = () => {
   return (
     <div className="box">
       <div className="box-1">
-        <h1 className='text-black text-4xl font-bold mt-3'>Login</h1>
+        <h1 className='h1'>Login</h1>
         <form className='form'>
-          <input type="text" placeholder='Enter email or username' className='nameInput' onChange={(e) => setName(e.target.value)} />
-          <input type="password" placeholder='Enter password' className='psdInput' onChange={(e) => setPass(e.target.value)} />
+          <input type="text" placeholder='Enter email or username' className='Input' onChange={(e) => setName(e.target.value)} />
+          <input type="password" placeholder='Enter password' className='Input' onChange={(e) => setPass(e.target.value)} />
           <button type='button' className='loginBtn' disabled={pending} onClick={send}>Submit</button>
           <div className="div">
             <span>Don't have account?</span> <a href="" className='text-blue-700 font-semibold'>Sign Up</a>
