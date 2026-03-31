@@ -1,13 +1,14 @@
 .navbar {
     height: 60px;
     width: 100%;
-    border: 2px solid black;
     display: flex;
     align-items: center;
     padding: 10px;
     justify-content: space-between;
     background-color: #837f7f;
     color: white;
+    position: fixed;
+    top: 0;
 }
 
 .navbar ul {
@@ -26,9 +27,5 @@
 }
 
 .navbar a:hover {
-    color: #e1dcdc
-}
-
-.navbar a:active{
-    color: black;
+    color: #e1dcdc;
 }
