@@ -1,0 +1,76 @@
+.parent {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.show {
+    width: 90%;
+    max-width: 1200px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+.table thead {
+    background-color: #837f7f;
+    color: white;
+}
+
+.descCol {
+  width: 60%;
+}
+
+.taskCol{
+    width: 20%;
+}
+
+.updateCol .deleteCol {
+  width: 10%;
+  text-align: center;
+}
+
+.table th {
+    padding: 15px;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1rem;
+}
+
+.update {
+    padding: 6px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete {
+    padding: 6px 12px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.update:hover {
+    background-color: #45a049;
+}
+
+.delete:hover {
+    background-color: #d32f2f;
+}

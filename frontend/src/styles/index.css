@@ -1,5 +1,11 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+main{
+    background-color: #f4f4f4;
+    margin-top: 60px;
+    height: 91vh;
 }

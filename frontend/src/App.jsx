@@ -11,14 +11,18 @@ function App() {
 
   return (
     <>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/add' element={<AddTask />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/signup' element={<Signup/>} />
-      </Routes>
+      <header>
+        <Navbar />
+      </header>
+      <main>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/add' element={<AddTask />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+        </Routes>
+      </main>
     </>
   )
 }
