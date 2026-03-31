@@ -1,11 +1,12 @@
-import express, { urlencoded } from 'express'
+import express from 'express'
 import mongoose from 'mongoose';
 import taskModel from './userModel/taskModel.js';
+import cors from 'cors'
 const app = express();
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-
+app.use(cors())
 
 app.get("/", async (req, res) => {
     const data = await taskModel.find();
@@ -18,11 +19,10 @@ app.get("/", async (req, res) => {
     res.send("<h1>Sent</h1>")
 })
 
-
 app.post("/add-task", async (req, res) => {
     const data = req.body;
     await taskModel.create(data);
-    res.send("working");
+    res.send("working")
 })
 
 mongoose.connect("mongodb://localhost:27017/task").then(() => {
