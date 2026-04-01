@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import style from '../styles/home.module.css'
+import { useNavigate } from 'react-router-dom';
 export const Home = () => {
 
   const [task, setTask] = useState([]);
+  const navigate = useNavigate();
 
   const getTasks = async () => {
     try {
@@ -35,9 +37,11 @@ export const Home = () => {
 
   const updateTask = async (id) => {
     try {
-      const data = await fetch(`http://localhost:4200/get-task/${id}`);
-      const res = await data.json();
-      console.log(res);
+      const res = await fetch(`http://localhost:4200/get-task/${id}`);
+      if(!res.ok) throw new Error ("Error Occured");
+      const data = await res.json();
+      console.log(data);
+      navigate(`/edit/${data._id}`);
     }
     catch (err) {
       console.log(err)

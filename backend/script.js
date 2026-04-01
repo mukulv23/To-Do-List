@@ -9,8 +9,15 @@ app.use(express.json());
 app.use(cors())
 
 app.get("/", async (req, res) => {
-    const data = await taskModel.find();
-    res.json(data)
+    try {
+        const data = await taskModel.find();
+        console.log(data)
+        res.json(data)
+    }
+    catch (err) {
+        console.log(err);
+        res.status(505).json(err);
+    }
 })
 
 app.get("/get-task/:id", async (req, res) => {
@@ -22,27 +29,48 @@ app.get("/get-task/:id", async (req, res) => {
     }
     catch (err) {
         console.log(err);
-        res.status(500).json(err);
+        res.status(505).json(err);
     }
 })
 
 app.post("/add-task", async (req, res) => {
-    const data = req.body;
-    const newTask = await taskModel.create(data);
-    res.json(newTask)
+    try {
+        const data = req.body;
+        const newTask = await taskModel.create(data);
+        console.log(newTask)
+        res.json(newTask)
+    }
+    catch (err) {
+        console.log(err);
+        res.status(505).json(err);
+    }
 })
 
 app.delete("/delete-task/:id", async (req, res) => {
-    const id = req.params.id;
-    const deleted = await taskModel.findByIdAndDelete(id);
-    console.log(deleted)
-    res.json(deleted);
+    try {
+        const id = req.params.id;
+        const deleted = await taskModel.findByIdAndDelete(id);
+        console.log(deleted)
+        res.json(deleted);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(505).json(err);
+    }
 })
 
 app.put("/update-task/:id", async (req, res) => {
-    const id = req.params.id;
-    await taskModel.findByIdAndUpdate(id);
-    res.json("Updated");
+    try {
+        const data = req.body;
+        const id = req.params.id;
+        const updated = await taskModel.findByIdAndUpdate(id,data);
+        console.log(updated);
+        res.json(updated);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(505).json(err);
+    }
 })
 
 mongoose.connect("mongodb://localhost:27017/task").then(() => {
