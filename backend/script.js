@@ -4,25 +4,45 @@ import taskModel from './userModel/taskModel.js';
 import cors from 'cors'
 const app = express();
 
-app.use(express.urlencoded({extended:true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors())
 
 app.get("/", async (req, res) => {
     const data = await taskModel.find();
-    res.send(data)
+    res.json(data)
+})
+
+app.get("/get-task/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const data = await taskModel.findById(id);
+        console.log(data);
+        res.json(data);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json(err);
+    }
 })
 
 app.post("/add-task", async (req, res) => {
     const data = req.body;
-    await taskModel.create(data);
-    res.send("working")
+    const newTask = await taskModel.create(data);
+    res.json(newTask)
 })
 
-app.delete("/delete-task/:id",async(req,res)=>{
+app.delete("/delete-task/:id", async (req, res) => {
     const id = req.params.id;
-    await taskModel.findByIdAndDelete(id);
-    res.send("deleted");
+    const deleted = await taskModel.findByIdAndDelete(id);
+    console.log(deleted)
+    res.json(deleted);
+})
+
+app.put("/update-task/:id", async (req, res) => {
+    const id = req.params.id;
+    await taskModel.findByIdAndUpdate(id);
+    res.json("Updated");
 })
 
 mongoose.connect("mongodb://localhost:27017/task").then(() => {

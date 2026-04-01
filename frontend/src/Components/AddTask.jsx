@@ -7,17 +7,26 @@ export const AddTask = () => {
   const [desc, setDescription] = useState("");
   const navigate = useNavigate();
   const handleSubmit = async () => {
-    await fetch("http://localhost:4200/add-task", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        task: task,
-        description: desc
-      })
-    });
-    navigate('/');
+    try {
+      const res = await fetch("http://localhost:4200/add-task", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          task: task,
+          description: desc
+        })
+      });
+      if (!res.ok) throw new Error("Server Error")
+
+      const data = await res.json();
+      console.log(data);
+      navigate('/');
+    }
+    catch (err) {
+      console.log("Error : ", err);
+    }
   }
 
   return (

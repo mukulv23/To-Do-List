@@ -5,22 +5,44 @@ export const Home = () => {
   const [task, setTask] = useState([]);
 
   const getTasks = async () => {
-    const data = await fetch("http://localhost:4200");
-    const res = await data.json();
-    setTask(res);
-    console.log(res);
+    try {
+      const res = await fetch("http://localhost:4200");
+      if (!res.ok) throw new Error("Server Error");
+      const data = await res.json();
+      setTask(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
   useEffect(() => {
     getTasks();
   }, []);
 
   const deleteTask = async (id) => {
-    const data = await fetch(`http://localhost:4200/delete-task/${id}`, {
-      method: "delete"
-    })
-    alert("Deleted");
+    try {
+      const res = await fetch(`http://localhost:4200/delete-task/${id}`, {
+        method: "delete"
+      })
+      if (!res.ok) throw new Error("Server error");
+      const data = await res.json();
+      setTask(prev => prev.filter(val => val._id !== id))
+      alert(`Deleted ${data.task}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  const updateTask = async (id) => {
+    try {
+      const data = await fetch(`http://localhost:4200/get-task/${id}`);
+      const res = await data.json();
+      console.log(res);
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <>
@@ -43,7 +65,7 @@ export const Home = () => {
                   <td className={style.taskCol}>{val.task}</td>
                   <td className={style.descCol}>{val.description}</td>
                   <td className={style.updateCol}>
-                    <button className={style.update}>Update</button>
+                    <button className={style.update} onClick={() => updateTask(val._id)}>Update</button>
                   </td>
                   <td className={style.deleteCol}>
                     <button className={style.delete} onClick={() => deleteTask(val._id)}>Delete</button>
