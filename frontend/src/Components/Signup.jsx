@@ -1,16 +1,74 @@
-import React from 'react'
+// Signup.jsx
+import React, { useState } from "react";
+import styles from "../styles/signup.module.css";
 
 export const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    console.log(formData);
+    alert("Signup successful!");
+  };
+
   return (
-    <>
-      <div className="form">
-        <form action="/signup" method='post'>
-          <input type="text" placeholder='Enter your name' />
-          <input type="email" placeholder='Enter your email' />
-          <input type="password" placeholder='Enter your password' />
-          <button>submit</button>
-        </form>
+    <div className={styles.container}>
+      <div className={styles.form} onSubmit={handleSubmit}>
+        <h2 className={styles.title}>Create Account</h2>
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          required
+        />
+
+        <button>Sign Up</button>
       </div>
-    </>
-  )
+    </div>
+  );
 }
