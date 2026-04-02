@@ -1,6 +1,6 @@
 // Signup.jsx
 import React, { useState } from "react";
-import styles from "../styles/signup.module.css";
+import styles from "../styles/auth.module.css";
 
 export const Signup = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +29,7 @@ export const Signup = () => {
   return (
     <div className={styles.container}>
       <div className={styles.form} onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Create Account</h2>
+        <h1 className={styles.title}>Create Account</h1>
 
         <input
           type="text"
