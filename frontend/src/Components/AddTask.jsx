@@ -20,9 +20,12 @@ export const AddTask = ({ edit, id }) => {
       console.log(err)
     }
   }
-  useEffect(() => {
-    getFormFill(id)
-  }, [])
+
+  useEffect(()=>{
+    if(edit && id){
+      getFormFill(id);
+    }
+  },[edit,id])
 
   const handleSubmit = async () => {
     try {

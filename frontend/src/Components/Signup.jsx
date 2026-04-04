@@ -1,8 +1,9 @@
-// Signup.jsx
 import React, { useState } from "react";
 import styles from "../styles/auth.module.css";
+import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,21 +15,36 @@ export const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (e) => {
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
-
-    console.log(formData);
-    alert("Signup successful!");
+    try {
+      const res = await fetch("http://localhost:4200/signup", {
+        method: "POST",
+        body: JSON.stringify({ fullname: formData.name, email: formData.email, password: formData.password }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      const data = await res.json()
+      if (data) {
+        console.log(data);
+        console.log(formData)
+        document.cookie = `token = ${data.token}`
+        alert(data.message);
+        navigate('/login');
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className={styles.container}>
-      <div className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.form}>
         <h1 className={styles.title}>Create Account</h1>
 
         <input
@@ -67,7 +83,7 @@ export const Signup = () => {
           required
         />
 
-        <button>Sign Up</button>
+        <button onClick={handleSubmit}>Sign Up</button>
       </div>
     </div>
   );
