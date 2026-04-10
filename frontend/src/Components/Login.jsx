@@ -21,14 +21,14 @@ export const Login = () => {
         body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        credentials:'include'
       });
       const data = await response.json();
       console.log(data);
 
       if (data.success) {
         setUser(data.user.fullname);
-        document.cookie = `token = ${data.token}`
         alert(data.message)
         navigate('/');
       }

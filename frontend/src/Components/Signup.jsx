@@ -26,13 +26,13 @@ export const Signup = () => {
         body: JSON.stringify({ fullname: formData.name, email: formData.email, password: formData.password }),
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        credentials: 'include'
       })
       const data = await res.json()
       if (data) {
         console.log(data);
         console.log(formData)
-        document.cookie = `token = ${data.token}`
         alert(data.message);
         navigate('/login');
       }

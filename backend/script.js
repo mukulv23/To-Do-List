@@ -4,15 +4,20 @@ import taskModel from './Model/taskModel.js';
 import cors from 'cors'
 import signUpModel from './Model/signUpModel.js';
 import jwt from 'jsonwebtoken'
+import ck from 'cookie-parser'
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}))
+app.use(ck())
 
 // APIs for Lists
 
-app.get("/", async (req, res) => {
+app.get("/", verifyToken, async (req, res) => {
     try {
         const data = await taskModel.find();
         console.log(data)
@@ -23,6 +28,19 @@ app.get("/", async (req, res) => {
         res.status(505).json(err);
     }
 })
+
+function verifyToken(req, res, next) {
+    const token = req.cookies['token'];
+    jwt.verify(token, "todo", (err, decoded) => {
+        if (err) {
+            console.log("error occured");
+        }
+        else {
+            console.log("Passed");
+            next();
+        }
+    })
+}
 
 app.get("/get-task/:id", async (req, res) => {
     try {
@@ -92,18 +110,22 @@ app.post("/signup", async (req, res) => {
                         message: "Token error"
                     });
                 }
-                res.json({
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: false, // true in production (https)
+                    sameSite: "lax"
+                }).json({
                     success: true,
-                    message: "User Added",
-                    user, token
-                })
+                    message: "User Found",
+                    user
+                });
             })
         }
         console.log("Added ", data);
     }
     catch (err) {
         console.log(err);
-        res.status(505).json({
+        res.status(500).json({
             success: false,
             message: "User not added",
             err
@@ -120,10 +142,14 @@ app.post("/login", async (req, res) => {
         if (user && user.password === password) {
             console.log(user);
             jwt.sign({ id: user._id }, "todo", { expiresIn: "7d" }, (err, token) => {
-                res.json({
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: "lax"
+                }).json({
+                    message: "User Added",
                     success: true,
-                    message: "User Found",
-                    user, token
+                    user
                 })
             })
         }
@@ -133,6 +159,7 @@ app.post("/login", async (req, res) => {
                 message: "User Not Found"
             })
         }
+
     }
     catch (err) {
         console.log(err);

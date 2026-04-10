@@ -8,7 +8,11 @@ export const Home = () => {
 
   const getTasks = async () => {
     try {
-      const res = await fetch("http://localhost:4200");
+      const res = await fetch("http://localhost:4200", {
+        method: "get",
+        credentials: 'include'
+      }
+      );
       if (!res.ok) throw new Error("Server Error");
       const data = await res.json();
       setTask(data);
@@ -38,7 +42,7 @@ export const Home = () => {
   const updateTask = async (id) => {
     try {
       const res = await fetch(`http://localhost:4200/get-task/${id}`);
-      if(!res.ok) throw new Error ("Error Occured");
+      if (!res.ok) throw new Error("Error Occured");
       const data = await res.json();
       console.log(data);
       navigate(`/edit/${data._id}`);
