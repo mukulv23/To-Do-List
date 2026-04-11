@@ -15,19 +15,27 @@ app.use(cors({
     credentials: true
 }))
 app.use(ck())
+app.use('/upload', express.static('upload'));
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, 'uploads');
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null,file.pfp);
-//     }
-// })
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'upload')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
 
-// const upload = multer.storage({storage});
+const uploadImg = multer({ storage });
 
-// app.post("/uploadPfp",)
+app.post("/upload", uploadImg.single('pfp'), (req, res) => {
+    res.json({
+        Image: req.file,
+        message: "Nice"
+    })
+    console.log(req.file)
+})
+
 // APIs for Lists
 
 app.get("/", verifyToken, async (req, res) => {
