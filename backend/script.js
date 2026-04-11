@@ -5,6 +5,7 @@ import cors from 'cors'
 import signUpModel from './Model/signUpModel.js';
 import jwt from 'jsonwebtoken'
 import ck from 'cookie-parser'
+import multer from 'multer';
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +16,18 @@ app.use(cors({
 }))
 app.use(ck())
 
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads');
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null,file.pfp);
+//     }
+// })
+
+// const upload = multer.storage({storage});
+
+// app.post("/uploadPfp",)
 // APIs for Lists
 
 app.get("/", verifyToken, async (req, res) => {
@@ -36,7 +49,7 @@ function verifyToken(req, res, next) {
             console.log("error occured");
         }
         else {
-            console.log("Passed");
+            console.log("Passed ", decoded);
             next();
         }
     })
@@ -147,7 +160,7 @@ app.post("/login", async (req, res) => {
                     secure: false,
                     sameSite: "lax"
                 }).json({
-                    message: "User Added",
+                    message: "User Found",
                     success: true,
                     user
                 })

@@ -7,6 +7,7 @@ import { AddTask } from './Components/AddTask'
 import { Login } from './Components/Login'
 import { Signup } from './Components/Signup'
 import { EditTask } from './Components/EditTask'
+import { Protected } from './Components/Protected'
 
 function App() {
 
@@ -17,12 +18,12 @@ function App() {
       </header>
       <main>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/add' element={<AddTask />} />
+          <Route path='/' element={<Protected><Home /> </Protected>} />
+          <Route path='/add' element={<Protected><AddTask /> </Protected>} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/edit/:id' element={<EditTask />} />
+          <Route path='/edit/:id' element={<Protected><EditTask /></Protected>} />
           <Route path='*' element={<h1>Error</h1>} />
         </Routes>
       </main>

@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/auth.module.css";
 import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
+
+  useEffect(() => {
+    if (localStorage.getItem("login")) {
+      navigate('/');
+      alert("Already Logged in")
+    }
+  },[])
+
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: "",

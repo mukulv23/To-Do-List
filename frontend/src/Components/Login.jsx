@@ -3,6 +3,15 @@ import styles from "../styles/auth.module.css";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+
+
+  useEffect(() => {
+    if (localStorage.getItem("login")) {
+      navigate('/');
+      alert("Already Logged in")
+    }
+  }, [])
+
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
@@ -22,13 +31,17 @@ export const Login = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        credentials:'include'
+        credentials: 'include'
       });
       const data = await response.json();
       console.log(data);
 
       if (data.success) {
         setUser(data.user.fullname);
+        localStorage.setItem("login", JSON.stringify({
+          email: data.user.email,
+          name: data.user.fullname
+        }));
         alert(data.message)
         navigate('/');
       }
