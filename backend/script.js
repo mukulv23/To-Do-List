@@ -46,9 +46,10 @@ app.post("/upload", uploadImg.single('pfp'), async (req, res) => {
 
         res.json({
             message: "Upload successful",
-            data: savedImage
+            data: {
+                savedImage: image.replace(/\\/g, "/")
+            }
         });
-
     } catch (err) {
         console.error("ERROR:", err);
         res.status(500).json({ error: err.message });
@@ -73,7 +74,7 @@ function verifyToken(req, res, next) {
     const token = req.cookies['token'];
     jwt.verify(token, "todo", (err, decoded) => {
         if (err) {
-            console.log("error occured");
+            console.log("error occured: ", err.message);
         }
         else {
             console.log("Passed ", decoded);

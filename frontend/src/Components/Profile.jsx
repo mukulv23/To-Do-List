@@ -3,8 +3,8 @@ import styles from '../styles/profile.module.css'
 import { useNavigate } from 'react-router-dom';
 export const Profile = () => {
   const [user, setUser] = useState(null);
-  const [img, setImg] = useState();
-  const [pfpImg, setPfpImg] = useState('');
+  const [img, setImg] = useState(null);
+  const [pfpImg, setPfpImg] = useState(null);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("login")))
@@ -21,6 +21,7 @@ export const Profile = () => {
     }
     const formData = new FormData();
     formData.append("pfp", img);
+
     const response = await fetch("http://localhost:4200/upload", {
       method: "POST",
       body: formData,
@@ -28,22 +29,41 @@ export const Profile = () => {
     })
     const data = await response.json();
 
-    const imageUrl = `http://localhost:4200/${data.data.image}`
+    const imageUrl = `http://localhost:4200/${data.data.savedImage}`
     setPfpImg(imageUrl);
-    console.log(imageUrl);
+
+    const updatedUser = { ...user, pfp: imageUrl }
+    localStorage.setItem("login", JSON.stringify(updatedUser));
+    setUser(updatedUser);
   }
 
   return <>
     <div className={styles.outer}>
       <div className={styles.inner}>
         <h2>Hi {user.name}!</h2>
-        <div className={styles.circle} style={pfpImg ? { backgroundImage: `url(${pfpImg})` } : {background:`url(${'favicon.jpg'})`}}>
-          <input type="file" onChange={(e) => setImg(e.target.files[0])} />
+
+        <div className={styles.circle} style={{
+          backgroundImage: `url(${pfpImg || user.pfp || "DefaultPfp.jpg"})`
+        }}>
+          <input
+            id="fileInput"
+            type="file"
+
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setImg(file);
+
+              if (file) {
+                setPfpImg(URL.createObjectURL(file));
+              }
+            }}
+          />
           <button onClick={sendImage}>send</button>
         </div>
+
         <p>{user.email}</p>
         <button className={styles.logoutBtn} onClick={() => {
-          localStorage.removeItem("login");
+          localStorage.removeItem('login');
           navigate('/login');
         }}>Logout</button>
       </div>
