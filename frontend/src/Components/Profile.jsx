@@ -5,6 +5,7 @@ export const Profile = () => {
   const [user, setUser] = useState(null);
   const [img, setImg] = useState(null);
   const [pfpImg, setPfpImg] = useState(null);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("login")))
@@ -35,6 +36,7 @@ export const Profile = () => {
     const updatedUser = { ...user, pfp: imageUrl }
     localStorage.setItem("login", JSON.stringify(updatedUser));
     setUser(updatedUser);
+    setShow(!show);
   }
 
   return <>
@@ -42,24 +44,33 @@ export const Profile = () => {
       <div className={styles.inner}>
         <h2>Hi {user.name}!</h2>
 
-        <div className={styles.circle} style={{
-          backgroundImage: `url(${pfpImg || user.pfp || "DefaultPfp.jpg"})`
-        }}>
-          <input
-            id="fileInput"
-            type="file"
+        <div
+          className={styles.circle}
+          onClick={() => {
+            document.getElementById("fileInput").click()
+            setShow(!show);
+          }}
+          style={{
+            backgroundImage: `url(${pfpImg || user.pfp || "DefaultPfp.jpg"})`
+          }}
+        ></div>
 
-            onChange={(e) => {
-              const file = e.target.files[0];
-              setImg(file);
+        <input
+          id="fileInput"
+          type="file"
+          hidden
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (!file) return;
 
-              if (file) {
-                setPfpImg(URL.createObjectURL(file));
-              }
-            }}
-          />
-          <button onClick={sendImage}>send</button>
-        </div>
+            setImg(file);
+            setPfpImg(URL.createObjectURL(file)); //preview of the image yet not save
+          }}
+        />
+
+        {
+          show ? <button onClick={sendImage}>Upload</button> : null
+        }
 
         <p>{user.email}</p>
         <button className={styles.logoutBtn} onClick={() => {
