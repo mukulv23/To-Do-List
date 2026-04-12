@@ -6,6 +6,7 @@ import signUpModel from './Model/signUpModel.js';
 import jwt from 'jsonwebtoken'
 import ck from 'cookie-parser'
 import multer from 'multer';
+import imgModel from './Model/imgModel.js'
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -28,13 +29,31 @@ const storage = multer.diskStorage({
 
 const uploadImg = multer({ storage });
 
-app.post("/upload", uploadImg.single('pfp'), (req, res) => {
-    res.json({
-        Image: req.file,
-        message: "Nice"
-    })
-    console.log(req.file)
-})
+app.post("/upload", uploadImg.single('pfp'), async (req, res) => {
+    try {
+        if (!req.file) {
+            console.log("No file received");
+            return res.status(400).json({ message: "No file uploaded" });
+        }
+
+        console.log("File:", req.file);
+
+        const image = req.file.path;
+
+        const savedImage = await imgModel.create({ image });
+
+        console.log("Saved:", savedImage);
+
+        res.json({
+            message: "Upload successful",
+            data: savedImage
+        });
+
+    } catch (err) {
+        console.error("ERROR:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // APIs for Lists
 
