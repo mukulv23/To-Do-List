@@ -207,9 +207,12 @@ app.post("/login", async (req, res) => {
     }
 })
 
-mongoose.connect("mongodb://localhost:27017/task").then(() => {
+mongoose.connect("mongodb+srv://mukulv072_db_user:todolist@cluster0.vt8imij.mongodb.net/?appName=Cluster0").then(() => {
     console.log("Db connected");
     app.listen(4200, () => {
         console.log("Sever is running");
     })
 })
+
+// mongodb + srv://mukulv072_db_user:todolist@cluster0.vt8imij.mongodb.net/?appName=Cluster0
+// mongodb://localhost:27017/task
