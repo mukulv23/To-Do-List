@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export const Home = () => {
 
   const [task, setTask] = useState([]);
+  const [taskDone, setTaskDone] = useState([]);
   const navigate = useNavigate();
 
   const getTasks = async () => {
@@ -28,7 +29,8 @@ export const Home = () => {
   const deleteTask = async (id) => {
     try {
       const res = await fetch(`http://localhost:4200/delete-task/${id}`, {
-        method: "delete"
+        method: "delete",
+        credentials: 'include'
       })
       if (!res.ok) throw new Error("Server error");
       const data = await res.json();
@@ -41,7 +43,7 @@ export const Home = () => {
 
   const updateTask = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4200/get-task/${id}`);
+      const res = await fetch(`http://localhost:4200/get-task/${id}`, { credentials: 'include' });
       if (!res.ok) throw new Error("Error Occured");
       const data = await res.json();
       console.log(data);
@@ -52,12 +54,17 @@ export const Home = () => {
     }
   }
 
+  const done = async (id) => {
+    setTaskDone((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
   return (
     <>
       {task.length > 0 ? <div className={style.parent}>
         <div className={style.show}>
           <table className={style.table}>
-
             <thead>
               <tr>
                 <th className={style.taskCol}>Task</th>
@@ -70,13 +77,13 @@ export const Home = () => {
             <tbody>
               {task.map((val, index) => (
                 <tr key={index}>
-                  <td className={style.taskCol}>{val.task}</td>
-                  <td className={style.descCol}>{val.description}</td>
+                  <td className={style.taskCol} style={taskDone.includes(val._id) ? { textDecoration: 'line-through', opacity: .5 } : null}><input type="checkbox" onChange={() => done(val._id)} />{val.task}</td>
+                  <td className={style.descCol} style={taskDone.includes(val._id) ? { textDecoration: 'line-through', opacity: .5 } : null}>{val.description}</td>
                   <td className={style.updateCol}>
-                    <button className={style.update} onClick={() => updateTask(val._id)}>Update</button>
+                    <button className={style.update} style={taskDone.includes(val._id) ? { textDecoration: 'line-through', opacity: .5 } : null} onClick={() => updateTask(val._id)}>Update</button>
                   </td>
                   <td className={style.deleteCol}>
-                    <button className={style.delete} onClick={() => deleteTask(val._id)}>Delete</button>
+                    <button className={style.delete} style={taskDone.includes(val._id) ? { textDecoration: 'line-through', opacity: .5 } : null} onClick={() => deleteTask(val._id)}>Delete</button>
                   </td>
                 </tr>
               ))}

@@ -5,7 +5,7 @@ export const Navbar = () => {
   return (
     <>
       <div className={style.navbar}>
-        <NavLink to='/'>To do List</NavLink>
+        <NavLink to='/'>TM</NavLink>
         <ul>
           <li><NavLink to='/add'>Add Task</NavLink></li>
           <li><NavLink to='/login'>Login</NavLink></li>

@@ -1,7 +1,7 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import taskModel from './Model/taskModel.js';
-import cors from 'cors'
+import cors from 'cors';
 import signUpModel from './Model/signUpModel.js';
 import jwt from 'jsonwebtoken'
 import ck from 'cookie-parser'
@@ -17,6 +17,19 @@ app.use(cors({
 }))
 app.use(ck())
 app.use('/upload', express.static('upload'));
+
+function verifyToken(req, res, next) {
+    const token = req.cookies['token'];
+    jwt.verify(token, "todo", (err, decoded) => {
+        if (err) {
+            console.log("error occured: ", err.message);
+        }
+        else {
+            console.log("Passed ", decoded);
+            next();
+        }
+    })
+}
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -69,19 +82,6 @@ app.get("/", verifyToken, async (req, res) => {
         res.status(505).json(err);
     }
 })
-
-function verifyToken(req, res, next) {
-    const token = req.cookies['token'];
-    jwt.verify(token, "todo", (err, decoded) => {
-        if (err) {
-            console.log("error occured: ", err.message);
-        }
-        else {
-            console.log("Passed ", decoded);
-            next();
-        }
-    })
-}
 
 app.get("/get-task/:id", async (req, res) => {
     try {
@@ -200,14 +200,13 @@ app.post("/login", async (req, res) => {
                 message: "User Not Found"
             })
         }
-
     }
     catch (err) {
         console.log(err);
     }
 })
 
-mongoose.connect("mongodb+srv://mukulv072_db_user:todolist@cluster0.vt8imij.mongodb.net/?appName=Cluster0").then(() => {
+mongoose.connect("mongodb://localhost:27017/task").then(() => {
     console.log("Db connected");
     app.listen(4200, () => {
         console.log("Sever is running");
@@ -215,4 +214,3 @@ mongoose.connect("mongodb+srv://mukulv072_db_user:todolist@cluster0.vt8imij.mong
 })
 
 // mongodb + srv://mukulv072_db_user:todolist@cluster0.vt8imij.mongodb.net/?appName=Cluster0
-// mongodb://localhost:27017/task

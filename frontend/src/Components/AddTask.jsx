@@ -9,7 +9,7 @@ export const AddTask = ({ edit, id }) => {
 
   const getFormFill = async (id) => {
     try {
-      const res = await fetch(`http://localhost:4200/get-task/${id}`);
+      const res = await fetch(`http://localhost:4200/get-task/${id}`,{credentials:'include'});
       if (!res.ok) throw new Error("Error Occured");
       const data = await res.json();
       setTask(data.task)
@@ -37,7 +37,8 @@ export const AddTask = ({ edit, id }) => {
         body: JSON.stringify({
           task: task,
           description: desc
-        })
+        }),
+        credentials:'include'
       });
       if (!res.ok) throw new Error("Server Error")
 
@@ -60,7 +61,8 @@ export const AddTask = ({ edit, id }) => {
         body: JSON.stringify({
           task: task,
           description: desc
-        })
+        }),
+        credentials:'include'
       })
       if (!res.ok) throw new Error("Update Failed");
       const data = await res.json();

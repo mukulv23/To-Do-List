@@ -25,16 +25,16 @@
 }
 
 .descCol {
-  width: 78%;
+    width: 78%;
 }
 
-.taskCol{
+.taskCol {
     width: 8%;
 }
 
 .updateCol .deleteCol {
-  width: 7%;
-  text-align: center;
+    width: 7%;
+    text-align: center;
 }
 
 .table th {
